@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play the best Minecraft-inspired online games for free. Experience creative building, survival challenges, and sandbox adventures.">
+    <title>Minecraft Games | Play Free Online Minecraft-Style Games</title>
+    <link rel="canonical" href="https://minecraftgames.net">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .minecraft-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/minecraft-cover.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .minecraft-cover::after {
+            content: 'Click to play';
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        iframe.loaded {
+            z-index: 2;
+            position: relative;
+        }
+        
+        /* 沙盒风格装饰元素 */
+        .sandbox-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-block {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #8e5f39;
+            border: 4px solid #5d3d25;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+            animation: float 15s infinite linear;
+            opacity: 0.7;
+        }
+        
+        .floating-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-block.grass {
+            background-color: #5d9c41;
+            border-color: #3a7127;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-block.stone {
+            background-color: #a0a0a0;
+            border-color: #707070;
+        }
+        
+        .floating-block.water {
+            background-color: #3ba0c3;
+            border-color: #2a7a9e;
+            opacity: 0.6;
+        }
+        
+        .floating-block.sand {
+            background-color: #e6d6a0;
+            border-color: #c7b481;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+        
+        .pixel-clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="100" viewBox="0 0 500 100"><path fill="%23ffffff" opacity="0.3" d="M30,30 h20 v20 h20 v-10 h10 v10 h10 v-10 h20 v10 h10 v-20 h20 v20 h-10 v10 h-10 v-10 h-10 v10 h-40 v-10 h-10 v10 h-20 v-10 h-10 v-20 Z M200,40 h30 v10 h10 v-10 h20 v10 h10 v-10 h10 v10 h10 v-10 h20 v20 h-20 v10 h-10 v-10 h-10 v10 h-30 v-10 h-10 v10 h-20 v-20 h10 v-10 Z M400,20 h30 v10 h10 v-10 h10 v20 h-10 v10 h-10 v-10 h-20 v-20 Z"></path></svg>') repeat-x;
+            animation: moveClouds 60s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes moveClouds {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 1000px 0;
+            }
+        }
+        
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, #3a7127 0%, #5d9c41 100%);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" viewBox="0 0 40 30"><path fill="%235d9c41" d="M0,0 h40 v20 h-5 v5 h-5 v5 h-30 Z"></path></svg>') repeat-x;
+            background-size: 40px 30px;
+            z-index: 1;
+        }
+        
+        .pickaxe-cursor {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="%237e5835" d="M12,8 L16,4 L20,8 L18,10 L22,14 L18,18 L14,14 L12,16 Z"/><path fill="%23555555" d="M12,16 L4,24 L8,28 L16,20 L14,18 Z"/></svg>'), auto;
+        }
+        
+        .section-title-block {
+            position: relative;
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #8e5f39;
+            border: 4px solid #5d3d25;
+            margin-bottom: 15px;
+            color: white;
+            transform: rotate(-1deg);
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title-block h2 {
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 0 #000;
+            transform: rotate(1deg);
+        }
+        
+        .pixel-border {
+            border-style: solid;
+            border-width: 8px;
+            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%23a0a0a0" width="20" height="20"/><rect fill="%23707070" width="10" height="10"/><rect fill="%23707070" x="10" y="10" width="10" height="10"/></svg>') 8 repeat;
+            border-image-outset: 2px;
+        }
+        
+        /* 新增装饰元素 */
+        .minecraft-logo {
+            position: relative;
+            margin: 0 auto 30px;
+            max-width: 500px;
+            height: 120px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 170"><path fill="%23502D16" d="M50,25 H550 V145 H50 Z"/><path fill="%237C4614" d="M60,35 H540 V135 H60 Z"/><path fill="%23A75818" d="M70,45 H530 V125 H70 Z"/></svg>') no-repeat center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: perspective(500px) rotateX(10deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .minecraft-logo h1 {
+            color: white;
+            font-size: 2.8rem;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        
+        .grass-block-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect fill="%235d3d25" width="80" height="60" y="20"/><rect fill="%235d9c41" width="80" height="20"/></svg>') repeat-x;
+            opacity: 0.15;
+        }
+        
+        .dirt-block-pattern {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect fill="%235d3d25" width="80" height="80"/><circle fill="%238e5f39" cx="20" cy="20" r="5"/><circle fill="%238e5f39" cx="60" cy="30" r="7"/><circle fill="%238e5f39" cx="30" cy="60" r="6"/><circle fill="%238e5f39" cx="70" cy="70" r="4"/></svg>') repeat-x;
+            opacity: 0.15;
+        }
+        
+        .creeper-face {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect fill="%2350B058" width="60" height="60"/><rect fill="%23000000" x="10" y="10" width="10" height="10"/><rect fill="%23000000" x="40" y="10" width="10" height="10"/><rect fill="%23000000" x="20" y="30" width="20" height="10"/><rect fill="%23000000" x="10" y="40" width="10" height="10"/><rect fill="%23000000" x="40" y="40" width="10" height="10"/></svg>') no-repeat;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        
+        .creeper-face.one {
+            top: 15%;
+            right: 10%;
+            transform: rotate(5deg);
+        }
+        
+        .creeper-face.two {
+            bottom: 12%;
+            left: 7%;
+            transform: rotate(-8deg) scale(0.8);
+        }
+        
+        .torch {
+            position: absolute;
+            width: 30px;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="60" viewBox="0 0 30 60"><rect fill="%235d3d25" x="10" y="30" width="10" height="30"/><polygon fill="%23FFD91C" points="15,0 5,30 25,30"/><circle fill="%23FFAA00" cx="15" cy="15" r="7"/></svg>') no-repeat;
+            z-index: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.7));
+        }
+        
+        .torch.one {
+            top: 10%;
+            left: 15%;
+        }
+        
+        .torch.two {
+            top: 10%;
+            right: 15%;
+            transform: scaleX(-1);
+        }
+        
+        .diamond-ore {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect fill="%23707070" width="40" height="40"/><polygon fill="%2368E1FD" points="15,10 25,10 30,15 20,30 10,15"/></svg>') no-repeat;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        
+        .diamond-ore.one {
+            bottom: 15%;
+            right: 20%;
+            transform: rotate(8deg);
+        }
+        
+        .diamond-ore.two {
+            top: 60%;
+            left: 10%;
+            transform: rotate(-5deg) scale(0.7);
+        }
+        
+        .sword {
+            position: absolute;
+            width: 40px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="100" viewBox="0 0 40 100"><rect fill="%235d3d25" x="15" y="60" width="10" height="40"/><polygon fill="%23C0C0C0" points="20,0 10,60 30,60"/></svg>') no-repeat;
+            top: 45%;
+            right: 25%;
+            transform: rotate(15deg);
+            z-index: 1;
+            opacity: 0.5;
+        }
+        
+        .pickaxe {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40"><rect fill="%235d3d25" x="20" y="15" width="60" height="10"/><polygon fill="%23C0C0C0" points="10,0 20,15 20,25 10,40 0,30"/><polygon fill="%23C0C0C0" points="90,0 80,15 80,25 90,40 100,30"/></svg>') no-repeat;
+            top: 45%;
+            left: 20%;
+            transform: rotate(-15deg);
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* 新增装饰元素 */
+        .crafting-table {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect fill="%238e5f39" width="80" height="80"/><rect fill="%235d3d25" x="10" y="10" width="20" height="20"/><rect fill="%235d3d25" x="30" y="10" width="20" height="20"/><rect fill="%235d3d25" x="50" y="10" width="20" height="20"/><rect fill="%235d3d25" x="10" y="30" width="20" height="20"/><rect fill="%235d3d25" x="30" y="30" width="20" height="20"/><rect fill="%235d3d25" x="50" y="30" width="20" height="20"/><rect fill="%235d3d25" x="10" y="50" width="20" height="20"/><rect fill="%235d3d25" x="30" y="50" width="20" height="20"/><rect fill="%235d3d25" x="50" y="50" width="20" height="20"/></svg>') no-repeat;
+            bottom: 10%;
+            right: 15%;
+            transform: rotate(5deg);
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .chest {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect fill="%238e5f39" width="60" height="60"/><rect fill="%235d3d25" x="5" y="5" width="50" height="50"/><rect fill="%235d3d25" x="15" y="15" width="30" height="30"/><rect fill="%23C0C0C0" x="20" y="20" width="20" height="20"/></svg>') no-repeat;
+            top: 20%;
+            left: 25%;
+            transform: rotate(-3deg);
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .tree {
+            position: absolute;
+            width: 40px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="80" viewBox="0 0 40 80"><rect fill="%238e5f39" x="15" y="40" width="10" height="40"/><polygon fill="%235d9c41" points="0,40 20,0 40,40"/><polygon fill="%235d9c41" points="5,50 20,20 35,50"/></svg>') no-repeat;
+            bottom: 15%;
+            left: 10%;
+            transform: rotate(2deg);
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .redstone-dust {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #ff0000 0px, #ff0000 4px, transparent 4px, transparent 8px);
+            bottom: 30%;
+            left: 0;
+            z-index: 1;
+            opacity: 0.3;
+            animation: redstonePulse 2s infinite;
+        }
+
+        @keyframes redstonePulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
+        }
+
+        .minecraft-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: particleFloat 3s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* 新增游戏列表两侧装饰元素 */
+        .side-decoration {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 80vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .side-decoration.left {
+            left: 20px;
+        }
+
+        .side-decoration.right {
+            right: 20px;
+        }
+
+        .minecraft-house {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160"><rect fill="%238e5f39" width="120" height="160"/><rect fill="%235d3d25" x="20" y="20" width="80" height="120"/><rect fill="%23C0C0C0" x="40" y="40" width="40" height="60"/><rect fill="%23C0C0C0" x="50" y="110" width="20" height="30"/><polygon fill="%235d3d25" points="0,40 60,0 120,40"/></svg>') no-repeat;
+            bottom: 20%;
+            opacity: 0.8;
+        }
+
+        .minecraft-tower {
+            position: absolute;
+            width: 80px;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="200" viewBox="0 0 80 200"><rect fill="%23a0a0a0" width="80" height="200"/><rect fill="%23707070" x="10" y="10" width="60" height="180"/><rect fill="%23C0C0C0" x="20" y="20" width="40" height="40"/><rect fill="%23C0C0C0" x="20" y="70" width="40" height="40"/><rect fill="%23C0C0C0" x="20" y="120" width="40" height="40"/></svg>') no-repeat;
+            top: 10%;
+            opacity: 0.7;
+        }
+
+        .minecraft-farm {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="100" viewBox="0 0 150 100"><rect fill="%235d9c41" width="150" height="100"/><rect fill="%238e5f39" x="10" y="10" width="30" height="30"/><rect fill="%238e5f39" x="50" y="10" width="30" height="30"/><rect fill="%238e5f39" x="90" y="10" width="30" height="30"/><rect fill="%238e5f39" x="130" y="10" width="10" height="30"/><rect fill="%235d3d25" x="0" y="90" width="150" height="10"/></svg>') no-repeat;
+            bottom: 30%;
+            opacity: 0.8;
+        }
+
+        .minecraft-castle {
+            position: absolute;
+            width: 180px;
+            height: 240px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="240" viewBox="0 0 180 240"><rect fill="%23a0a0a0" width="180" height="240"/><rect fill="%23707070" x="20" y="20" width="140" height="200"/><rect fill="%23C0C0C0" x="40" y="40" width="100" height="160"/><rect fill="%23C0C0C0" x="60" y="60" width="60" height="120"/><rect fill="%23C0C0C0" x="80" y="80" width="20" height="80"/><polygon fill="%23707070" points="0,40 90,0 180,40"/></svg>') no-repeat;
+            top: 15%;
+            opacity: 0.7;
+        }
+
+        .minecraft-village {
+            position: absolute;
+            width: 160px;
+            height: 120px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120"><rect fill="%238e5f39" width="160" height="120"/><rect fill="%235d3d25" x="20" y="20" width="40" height="80"/><rect fill="%235d3d25" x="70" y="20" width="40" height="80"/><rect fill="%235d3d25" x="120" y="20" width="20" height="60"/><rect fill="%23C0C0C0" x="30" y="30" width="20" height="20"/><rect fill="%23C0C0C0" x="80" y="30" width="20" height="20"/><rect fill="%23C0C0C0" x="130" y="30" width="10" height="10"/></svg>') no-repeat;
+            bottom: 25%;
+            opacity: 0.8;
+        }
+
+        .minecraft-cave {
+            position: absolute;
+            width: 140px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="100" viewBox="0 0 140 100"><path fill="%235d3d25" d="M0,50 Q20,20 40,50 Q60,80 80,50 Q100,20 120,50 Q140,80 140,50 L140,100 L0,100 Z"/><path fill="%238e5f39" d="M20,60 Q40,30 60,60 Q80,90 100,60 Q120,30 120,60 L120,100 L20,100 Z"/><circle fill="%23C0C0C0" cx="40" cy="40" r="5"/><circle fill="%23C0C0C0" cx="80" cy="40" r="5"/><circle fill="%23C0C0C0" cx="120" cy="40" r="5"/></svg>') no-repeat;
+            top: 40%;
+            opacity: 0.7;
+        }
+
+        .minecraft-mine {
+            position: absolute;
+            width: 100px;
+            height: 160px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="160" viewBox="0 0 100 160"><rect fill="%23707070" width="100" height="160"/><rect fill="%235d3d25" x="10" y="10" width="80" height="140"/><rect fill="%23C0C0C0" x="20" y="20" width="60" height="20"/><rect fill="%23C0C0C0" x="20" y="50" width="60" height="20"/><rect fill="%23C0C0C0" x="20" y="80" width="60" height="20"/><rect fill="%23C0C0C0" x="20" y="110" width="60" height="20"/></svg>') no-repeat;
+            bottom: 20%;
+            opacity: 0.8;
+        }
+
+        .floating {
+            animation: float 15s infinite linear;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .floating:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .floating.clicked {
+            animation: clickEffect 0.5s ease;
+        }
+
+        @keyframes clickEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* 新增交互效果样式 */
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .interactive-element.clicked {
+            animation: clickEffect 0.5s ease;
+        }
+
+        .torch {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .torch:hover {
+            filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.9));
+        }
+
+        .torch.clicked {
+            animation: torchClick 0.5s ease;
+        }
+
+        @keyframes torchClick {
+            0% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.7)); }
+            50% { transform: scale(1.2); filter: drop-shadow(0 0 20px rgba(255, 170, 0, 0.9)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.7)); }
+        }
+
+        .diamond-ore {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .diamond-ore:hover {
+            filter: brightness(1.3);
+        }
+
+        .diamond-ore.clicked {
+            animation: diamondClick 0.5s ease;
+        }
+
+        @keyframes diamondClick {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .creeper-face {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .creeper-face:hover {
+            filter: brightness(1.2);
+        }
+
+        .creeper-face.clicked {
+            animation: creeperClick 0.5s ease;
+        }
+
+        @keyframes creeperClick {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .chest {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chest:hover {
+            transform: translateY(-5px);
+        }
+
+        .chest.clicked {
+            animation: chestClick 0.5s ease;
+        }
+
+        @keyframes chestClick {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .crafting-table {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .crafting-table:hover {
+            transform: rotate(5deg);
+        }
+
+        .crafting-table.clicked {
+            animation: craftingClick 0.5s ease;
+        }
+
+        @keyframes craftingClick {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 新增粒子效果 */
+        .click-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 1s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 新增掉落物品效果 */
+        .dropped-item {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 100;
+            animation: dropItem 1s ease-out forwards;
+        }
+
+        @keyframes dropItem {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 不同物品的样式 */
+        .item-diamond {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon fill="%2368E1FD" points="5,5 15,5 20,10 10,20 0,10"/></svg>') no-repeat;
+        }
+
+        .item-emerald {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon fill="%2342D883" points="5,5 15,5 20,10 10,20 0,10"/></svg>') no-repeat;
+        }
+
+        .item-gold {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon fill="%23FFD700" points="5,5 15,5 20,10 10,20 0,10"/></svg>') no-repeat;
+        }
+
+        .item-redstone {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon fill="%23FF0000" points="5,5 15,5 20,10 10,20 0,10"/></svg>') no-repeat;
+        }
+
+        .item-wood {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%238e5f39" width="20" height="20"/><rect fill="%235d3d25" x="5" y="0" width="2" height="20"/><rect fill="%235d3d25" x="13" y="0" width="2" height="20"/></svg>') no-repeat;
+        }
+
+        .item-stone {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%23a0a0a0" width="20" height="20"/><rect fill="%23707070" x="5" y="5" width="10" height="10"/></svg>') no-repeat;
+        }
+
+        .item-seed {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle fill="%235d9c41" cx="10" cy="10" r="8"/><circle fill="%233a7127" cx="10" cy="10" r="4"/></svg>') no-repeat;
+        }
+
+        .item-torch {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%235d3d25" x="8" y="10" width="4" height="10"/><polygon fill="%23FFD91C" points="10,0 5,10 15,10"/><circle fill="%23FFAA00" cx="10" cy="5" r="3"/></svg>') no-repeat;
+        }
+
+        .item-book {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%238e5f39" width="20" height="20"/><rect fill="%23C0C0C0" x="5" y="5" width="10" height="10"/><rect fill="%23C0C0C0" x="5" y="15" width="10" height="2"/></svg>') no-repeat;
+        }
+    </style>
+</head>
+<body class="pickaxe-cursor">
+    <!-- 左侧装饰 -->
+    <div class="side-decoration left">
+        <div class="minecraft-house floating interactive-element" style="animation-delay: 0s;"></div>
+        <div class="minecraft-tower floating interactive-element" style="animation-delay: 3s;"></div>
+        <div class="minecraft-farm floating interactive-element" style="animation-delay: 6s;"></div>
+        <div class="minecraft-cave floating interactive-element" style="animation-delay: 9s;"></div>
+    </div>
+
+    <!-- 右侧装饰 -->
+    <div class="side-decoration right">
+        <div class="minecraft-castle floating interactive-element" style="animation-delay: 2s;"></div>
+        <div class="minecraft-village floating interactive-element" style="animation-delay: 5s;"></div>
+        <div class="minecraft-mine floating interactive-element" style="animation-delay: 8s;"></div>
+    </div>
+
+    <!-- 像素风格云朵 -->
+    <div class="pixel-clouds"></div>
+    
+    <!-- 漂浮的方块装饰 -->
+    <div class="sandbox-elements">
+        <div class="floating-block grass interactive-element" style="top: 15%; left: 5%; animation-delay: 0s; animation-duration: 25s;"></div>
+        <div class="floating-block stone interactive-element" style="top: 25%; left: 15%; animation-delay: 2s; animation-duration: 20s;"></div>
+        <div class="floating-block interactive-element" style="top: 10%; right: 10%; animation-delay: 5s; animation-duration: 18s;"></div>
+        <div class="floating-block water interactive-element" style="top: 60%; left: 8%; animation-delay: 8s; animation-duration: 22s;"></div>
+        <div class="floating-block sand interactive-element" style="top: 70%; right: 15%; animation-delay: 12s; animation-duration: 23s;"></div>
+        <div class="floating-block grass interactive-element" style="top: 40%; right: 5%; animation-delay: 16s; animation-duration: 19s;"></div>
+    </div>
+    
+    <!-- 新增装饰元素 -->
+    <div class="crafting-table interactive-element"></div>
+    <div class="chest interactive-element"></div>
+    <div class="tree interactive-element"></div>
+    <div class="redstone-dust"></div>
+    <div class="minecraft-particles"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">MinecraftGames.net</div>
+                <nav>
+                    <ul>
+                        <li><a href="#games">Games</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <!-- 草方块图案装饰 -->
+        <div class="grass-block-pattern"></div>
+        
+        <!-- 泥土方块图案装饰 -->
+        <div class="dirt-block-pattern"></div>
+        
+        <!-- 苦力怕脸装饰 -->
+        <div class="creeper-face one"></div>
+        <div class="creeper-face two"></div>
+        
+        <!-- 火把装饰 -->
+        <div class="torch one"></div>
+        <div class="torch two"></div>
+        
+        <!-- 钻石矿石装饰 -->
+        <div class="diamond-ore one"></div>
+        <div class="diamond-ore two"></div>
+        
+        <!-- 剑和镐装饰 -->
+        <div class="sword"></div>
+        <div class="pickaxe"></div>
+        
+        <div class="container">
+            <div class="minecraft-logo">
+                <h1>MINECRAFT GAMES</h1>
+            </div>
+            <h2 class="pixel-border">The Best Minecraft-Inspired Games Online</h2>
+            <p>Explore creative building, survival challenges, and sandbox adventures – all in your browser for free!</p>
+        </div>
+    </section>
+    
+    <section id="games" class="games-section">
+        <div class="container">
+            <div class="section-title-block">
+                <h2>Featured Minecraft-Style Games</h2>
+            </div>
+            <p>Dive into these amazing Minecraft-inspired games that you can play directly in your browser without downloads.</p>
+            
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="minecraft-cover"></div>
+                        <iframe data-src="https://classic.minecraft.net" class="game-iframe" title="Classic Minecraft" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Classic Minecraft</h3>
+                        <p class="game-description">Experience the original Minecraft classic version right in your browser.</p>
+                        <a href="https://classic.minecraft.net" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://oskarstalberg.com/Townscaper" class="game-iframe" title="Townscaper" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Townscaper</h3>
+                        <p class="game-description">Build beautiful town islands with this relaxing city-building game.</p>
+                        <a href="https://oskarstalberg.com/Townscaper" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://krunker.io" class="game-iframe" title="Krunker.io" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Krunker.io</h3>
+                        <p class="game-description">A fast-paced FPS game with blocky graphics and Minecraft-inspired aesthetics.</p>
+                        <a href="https://krunker.io" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://sandspiel.club" class="game-iframe" title="Sandspiel" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Sandspiel</h3>
+                        <p class="game-description">Create beautiful falling sand art in this relaxing sandbox game.</p>
+                        <a href="https://sandspiel.club" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://shellshock.io" class="game-iframe" title="Shell Shockers" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Shell Shockers</h3>
+                        <p class="game-description">A fun egg-themed FPS game with simple graphics similar to Minecraft's style.</p>
+                        <a href="https://shellshock.io" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://skribbl.io" class="game-iframe" title="Skribbl.io" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Skribbl.io</h3>
+                        <p class="game-description">Draw and guess with friends in this multiplayer drawing game.</p>
+                        <a href="https://skribbl.io" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://littlealchemy2.com" class="game-iframe" title="Little Alchemy 2" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Little Alchemy 2</h3>
+                        <p class="game-description">Combine elements to create new items in this addictive crafting game.</p>
+                        <a href="https://littlealchemy2.com" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://noclip.website" class="game-iframe" title="noclip.website" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">noclip.website</h3>
+                        <p class="game-description">Explore 3D game environments from popular titles with no boundaries.</p>
+                        <a href="https://noclip.website" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <iframe data-src="https://dan-ball.jp/en/javagame/dust/" class="game-iframe" title="Powder Game" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Powder Game</h3>
+                        <p class="game-description">A physics simulation game where you can create and experiment with various elements and materials.</p>
+                        <a href="https://dan-ball.jp/en/javagame/dust/" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="section-title-block">
+                    <h2>About MinecraftGames.net</h2>
+                </div>
+                <p>MinecraftGames.net is your ultimate destination for free online Minecraft-inspired games and experiences. We've curated the best browser-based games that capture the creative, blocky essence of Minecraft, all playable instantly without downloads or installations.</p>
+                <p>Whether you're into building, crafting, survival, or just exploring blocky worlds, our collection of games offers something for every Minecraft enthusiast. Enjoy these games on any device, from desktop computers to mobile phones.</p>
+                <p>Our mission is to provide high-quality, free gaming experiences that embody the spirit of Minecraft's creativity and adventure. All games are carefully selected for their quality, performance, and similarity to the Minecraft aesthetic.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <div class="copyright">
+                    &copy; 2023 MinecraftGames.net - All rights reserved. Not affiliated with Mojang or Microsoft.
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+        // 添加处理封面点击的脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            const minecraftCover = document.querySelector('.minecraft-cover');
+            const minecraftIframe = document.querySelector('.game-iframe[title="Classic Minecraft"]');
+            
+            if (minecraftCover && minecraftIframe) {
+                minecraftCover.addEventListener('click', function() {
+                    // 加载iframe
+                    if (minecraftIframe.dataset.src) {
+                        minecraftIframe.src = minecraftIframe.dataset.src;
+                        minecraftIframe.classList.add('loaded');
+                        minecraftIframe.removeAttribute('data-src');
+                    }
+                    
+                    // 隐藏封面
+                    minecraftCover.style.display = 'none';
+                });
+            }
+            
+            // 随机生成更多漂浮方块
+            const sandboxElements = document.querySelector('.sandbox-elements');
+            const blockTypes = ['grass', 'stone', '', 'water', 'sand'];
+            
+            for (let i = 0; i < 12; i++) {
+                const block = document.createElement('div');
+                const randomType = blockTypes[Math.floor(Math.random() * blockTypes.length)];
+                
+                block.className = 'floating-block ' + randomType;
+                block.style.top = Math.random() * 100 + '%';
+                block.style.left = Math.random() * 100 + '%';
+                block.style.animationDelay = Math.random() * 20 + 's';
+                block.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                block.style.transform = 'scale(' + (Math.random() * 0.5 + 0.5) + ')';
+                
+                sandboxElements.appendChild(block);
+            }
+
+            // 创建粒子效果
+            const particlesContainer = document.querySelector('.minecraft-particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particlesContainer.appendChild(particle);
+            }
+
+            // 添加装饰元素交互效果
+            const interactiveElements = document.querySelectorAll('.interactive-element');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    // 添加点击动画类
+                    this.classList.add('clicked');
+                    
+                    // 创建点击粒子效果
+                    createClickParticles(e);
+                    
+                    // 创建掉落物品
+                    createDroppedItems(e, this);
+                    
+                    // 移除点击动画类
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 500);
+                });
+            });
+
+            // 创建点击粒子效果
+            function createClickParticles(e) {
+                const container = document.body;
+                const particleCount = 8;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'click-particle';
+                    
+                    // 设置粒子起始位置
+                    particle.style.left = e.clientX + 'px';
+                    particle.style.top = e.clientY + 'px';
+                    
+                    // 随机设置粒子移动方向
+                    const angle = (i / particleCount) * Math.PI * 2;
+                    const distance = 50 + Math.random() * 50;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    particle.style.setProperty('--tx', tx + 'px');
+                    particle.style.setProperty('--ty', ty + 'px');
+                    
+                    container.appendChild(particle);
+                    
+                    // 移除粒子
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }
+            }
+
+            // 创建掉落物品
+            function createDroppedItems(e, element) {
+                const container = document.body;
+                const itemCount = 3 + Math.floor(Math.random() * 3); // 随机3-5个物品
+                const items = [
+                    'diamond', 'emerald', 'gold', 'redstone', 
+                    'wood', 'stone', 'seed', 'torch', 'book'
+                ];
+                
+                for (let i = 0; i < itemCount; i++) {
+                    const item = document.createElement('div');
+                    const randomItem = items[Math.floor(Math.random() * items.length)];
+                    
+                    item.className = `dropped-item item-${randomItem}`;
+                    
+                    // 设置物品起始位置
+                    const rect = element.getBoundingClientRect();
+                    item.style.left = (rect.left + rect.width / 2) + 'px';
+                    item.style.top = (rect.top + rect.height / 2) + 'px';
+                    
+                    // 随机设置物品移动方向
+                    const angle = (i / itemCount) * Math.PI * 2;
+                    const distance = 20 + Math.random() * 30;
+                    const tx = Math.cos(angle) * distance;
+                    
+                    item.style.setProperty('--tx', tx + 'px');
+                    
+                    container.appendChild(item);
+                    
+                    // 移除物品
+                    setTimeout(() => {
+                        item.remove();
+                    }, 1000);
+                }
+            }
+
+            // 为特定元素添加特殊掉落物品
+            const diamondOres = document.querySelectorAll('.diamond-ore');
+            diamondOres.forEach(ore => {
+                ore.addEventListener('click', function(e) {
+                    this.classList.add('clicked');
+                    createDiamondDrops(e);
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 500);
+                });
+            });
+
+            function createDiamondDrops(e) {
+                const container = document.body;
+                const count = 5;
+                
+                for (let i = 0; i < count; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'dropped-item item-diamond';
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    item.style.left = (rect.left + rect.width / 2) + 'px';
+                    item.style.top = (rect.top + rect.height / 2) + 'px';
+                    
+                    const angle = (i / count) * Math.PI * 2;
+                    const distance = 20 + Math.random() * 30;
+                    const tx = Math.cos(angle) * distance;
+                    
+                    item.style.setProperty('--tx', tx + 'px');
+                    
+                    container.appendChild(item);
+                    
+                    setTimeout(() => {
+                        item.remove();
+                    }, 1000);
+                }
+            }
+
+            // 为箱子添加特殊掉落物品
+            const chests = document.querySelectorAll('.chest');
+            chests.forEach(chest => {
+                chest.addEventListener('click', function(e) {
+                    this.classList.add('clicked');
+                    createChestDrops(e);
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 500);
+                });
+            });
+
+            function createChestDrops(e) {
+                const container = document.body;
+                const items = ['diamond', 'emerald', 'gold', 'redstone', 'book'];
+                const count = 4;
+                
+                for (let i = 0; i < count; i++) {
+                    const item = document.createElement('div');
+                    const randomItem = items[Math.floor(Math.random() * items.length)];
+                    
+                    item.className = `dropped-item item-${randomItem}`;
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    item.style.left = (rect.left + rect.width / 2) + 'px';
+                    item.style.top = (rect.top + rect.height / 2) + 'px';
+                    
+                    const angle = (i / count) * Math.PI * 2;
+                    const distance = 20 + Math.random() * 30;
+                    const tx = Math.cos(angle) * distance;
+                    
+                    item.style.setProperty('--tx', tx + 'px');
+                    
+                    container.appendChild(item);
+                    
+                    setTimeout(() => {
+                        item.remove();
+                    }, 1000);
+                }
+            }
+
+            // 为工作台添加特殊掉落物品
+            const craftingTables = document.querySelectorAll('.crafting-table');
+            craftingTables.forEach(table => {
+                table.addEventListener('click', function(e) {
+                    this.classList.add('clicked');
+                    createCraftingDrops(e);
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 500);
+                });
+            });
+
+            function createCraftingDrops(e) {
+                const container = document.body;
+                const items = ['wood', 'stone', 'torch', 'book'];
+                const count = 4;
+                
+                for (let i = 0; i < count; i++) {
+                    const item = document.createElement('div');
+                    const randomItem = items[Math.floor(Math.random() * items.length)];
+                    
+                    item.className = `dropped-item item-${randomItem}`;
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    item.style.left = (rect.left + rect.width / 2) + 'px';
+                    item.style.top = (rect.top + rect.height / 2) + 'px';
+                    
+                    const angle = (i / count) * Math.PI * 2;
+                    const distance = 20 + Math.random() * 30;
+                    const tx = Math.cos(angle) * distance;
+                    
+                    item.style.setProperty('--tx', tx + 'px');
+                    
+                    container.appendChild(item);
+                    
+                    setTimeout(() => {
+                        item.remove();
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
