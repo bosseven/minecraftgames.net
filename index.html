@@ -6,11 +6,20 @@
     <meta name="description" content="Play the best Minecraft-inspired online games for free. Experience creative building, survival challenges, and sandbox adventures.">
     <title>Minecraft Games | Play Free Online Minecraft-Style Games</title>
     <link rel="canonical" href="https://minecraftgames.net">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKMP8SP4JD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DKMP8SP4JD');
+    </script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         .minecraft-cover {
             position: absolute;
@@ -786,10 +795,7 @@
                 <div class="game-card">
                     <div class="game-iframe-container">
                         <div class="minecraft-cover"></div>
-                        <div class="frame-blocked-message">
-                            <p>Classic Minecraft cannot be embedded due to security restrictions.</p>
-                            <p>Please use the "Play Full Screen" button below to open it in a new tab.</p>
-                        </div>
+                        <iframe data-src="https://classic.minecraft.net" class="game-iframe" title="Classic Minecraft" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Classic Minecraft</h3>
@@ -800,7 +806,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://oskarstalberg.com/Townscaper" class="game-iframe" title="Townscaper" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://oskarstalberg.com/Townscaper" class="game-iframe" title="Townscaper" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Townscaper</h3>
@@ -811,7 +817,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://krunker.io" class="game-iframe" title="Krunker.io" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://krunker.io" class="game-iframe" title="Krunker.io" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Krunker.io</h3>
@@ -822,7 +828,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://sandspiel.club" class="game-iframe" title="Sandspiel" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://sandspiel.club" class="game-iframe" title="Sandspiel" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Sandspiel</h3>
@@ -833,7 +839,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://shellshock.io" class="game-iframe" title="Shell Shockers" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://shellshock.io" class="game-iframe" title="Shell Shockers" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Shell Shockers</h3>
@@ -844,7 +850,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://skribbl.io" class="game-iframe" title="Skribbl.io" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://skribbl.io" class="game-iframe" title="Skribbl.io" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Skribbl.io</h3>
@@ -855,7 +861,7 @@
 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://littlealchemy2.com" class="game-iframe" title="Little Alchemy 2" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://littlealchemy2.com" class="game-iframe" title="Little Alchemy 2" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Little Alchemy 2</h3>
@@ -866,7 +872,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://noclip.website" class="game-iframe" title="noclip.website" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://noclip.website" class="game-iframe" title="noclip.website" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">noclip.website</h3>
@@ -877,7 +883,7 @@
 
                 <div class="game-card">
                     <div class="game-iframe-container">
-                        <iframe data-src="https://dan-ball.jp/en/javagame/dust/" class="game-iframe" title="Powder Game" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <iframe data-src="https://dan-ball.jp/en/javagame/dust/" class="game-iframe" title="Powder Game" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Powder Game</h3>
@@ -1179,4 +1185,4 @@
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
-</html>
+</html> 
