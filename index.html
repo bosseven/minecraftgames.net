@@ -6,20 +6,107 @@
     <meta name="description" content="Play the best Minecraft-inspired online games for free. Experience creative building, survival challenges, and sandbox adventures.">
     <title>Minecraft Games | Play Free Online Minecraft-Style Games</title>
     <link rel="canonical" href="https://minecraftgames.net">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBGLJ8ZM8R"></script>
+    <!-- Google tag (gtag.js) with cookie consent -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-MBGLJ8ZM8R');
+        // Default to denied until consent is given
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied'
+        });
+        
+        // Check if user has already consented
+        const cookieChoice = localStorage.getItem('cookieChoice');
+        if (cookieChoice === 'accepted') {
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted'
+            });
+        }
+        
+        gtag('js', new Date());
+        gtag('config', 'G-DKMP8SP4JD');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DKMP8SP4JD"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- 直接指定样式表类型 -->
+    <link rel="stylesheet" href="styles.css" type="text/css">
+    <!-- 备用样式表方案：如果外部样式表加载失败，使用内联样式作为备份 -->
+    <script>
+        // 检查样式表是否加载成功
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var styleSheets = document.styleSheets;
+                var cssLoaded = false;
+                
+                for (var i = 0; i < styleSheets.length; i++) {
+                    if (styleSheets[i].href && styleSheets[i].href.includes('styles.css')) {
+                        try {
+                            // 尝试访问CSS规则，如果失败则表示样式表未正确加载
+                            var rules = styleSheets[i].cssRules || styleSheets[i].rules;
+                            if (rules && rules.length > 0) {
+                                cssLoaded = true;
+                            }
+                        } catch (e) {
+                            // 安全错误表示CSS未正确加载
+                            console.error('CSS加载错误:', e);
+                        }
+                    }
+                }
+                
+                // 如果CSS未加载，尝试使用内联方式添加
+                if (!cssLoaded) {
+                    console.log('尝试使用内联方式加载CSS');
+                    var linkElement = document.createElement('link');
+                    linkElement.rel = 'stylesheet';
+                    linkElement.href = 'styles.css?' + new Date().getTime(); // 添加时间戳避免缓存
+                    linkElement.type = 'text/css';
+                    document.head.appendChild(linkElement);
+                }
+            }, 1000); // 延迟1秒检查
+        });
+    </script>
+    <style>
+        /* 最小的关键CSS样式作为备份 */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            padding-top: 76px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: #8B5A2B;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        .game-card {
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+        }
+    </style>
     <style>
         .minecraft-cover {
             position: absolute;
@@ -27,7 +114,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('images/minecraft-cover.jpg');
+            background-image: url('images/Classic Minecraft.png');
             background-size: cover;
             background-position: center;
             z-index: 1;
@@ -36,7 +123,21 @@
             justify-content: center;
         }
         
-        .minecraft-cover::after {
+        .game-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .minecraft-cover::after, .game-cover::after {
             content: 'Click to play';
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
@@ -695,8 +796,6 @@
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect fill="%238e5f39" width="20" height="20"/><rect fill="%23C0C0C0" x="5" y="5" width="10" height="10"/><rect fill="%23C0C0C0" x="5" y="15" width="10" height="2"/></svg>') no-repeat;
         }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4557769114663733"
-     crossorigin="anonymous"></script>
 </head>
 <body class="pickaxe-cursor">
     <!-- 左侧装饰 -->
@@ -793,11 +892,18 @@
             </div>
             <p>Dive into these amazing Minecraft-inspired games that you can play directly in your browser without downloads.</p>
             
+            <div class="games-note">
+                <p><strong>Note:</strong> Some games may restrict embedding in iframes. If a game doesn't load, please use the "Play Full Screen" button to open it directly.</p>
+            </div>
+            
             <div class="games-grid">
                 <div class="game-card">
                     <div class="game-iframe-container">
                         <div class="minecraft-cover"></div>
-                        <iframe data-src="https://classic.minecraft.net" class="game-iframe" title="Classic Minecraft" allowfullscreen></iframe>
+                        <div class="frame-blocked-message">
+                            <h4>This game restricts embedding.</h4>
+                            <p>Please click the button below to play the game directly.</p>
+                        </div>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Classic Minecraft</h3>
@@ -808,6 +914,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Townscaper.png');"></div>
                         <iframe data-src="https://oskarstalberg.com/Townscaper" class="game-iframe" title="Townscaper" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -819,6 +926,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Krunker.io.png');"></div>
                         <iframe data-src="https://krunker.io" class="game-iframe" title="Krunker.io" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -830,6 +938,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Sandspiel.png');"></div>
                         <iframe data-src="https://sandspiel.club" class="game-iframe" title="Sandspiel" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -841,6 +950,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Shell Shockers.jpg');"></div>
                         <iframe data-src="https://shellshock.io" class="game-iframe" title="Shell Shockers" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -852,6 +962,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Skribbl.io.jpg');"></div>
                         <iframe data-src="https://skribbl.io" class="game-iframe" title="Skribbl.io" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -863,6 +974,7 @@
 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Little Alchemy 2.jpg');"></div>
                         <iframe data-src="https://littlealchemy2.com" class="game-iframe" title="Little Alchemy 2" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -874,6 +986,7 @@
                 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/noclip.jpg');"></div>
                         <iframe data-src="https://noclip.website" class="game-iframe" title="noclip.website" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
@@ -885,12 +998,421 @@
 
                 <div class="game-card">
                     <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Powder Game.jpg');"></div>
                         <iframe data-src="https://dan-ball.jp/en/javagame/dust/" class="game-iframe" title="Powder Game" allowfullscreen></iframe>
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Powder Game</h3>
                         <p class="game-description">A physics simulation game where you can create and experiment with various elements and materials.</p>
                         <a href="https://dan-ball.jp/en/javagame/dust/" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Back to the Nest.jpg');"></div>
+                        <iframe data-src="https://js13kgames.com/games/back-to-the-nest/index.html" class="game-iframe" title="Back to the Nest" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Back to the Nest</h3>
+                        <p class="game-description">A Minecraft-inspired building adventure where you gather resources and build your nest.</p>
+                        <a href="https://js13kgames.com/games/back-to-the-nest/index.html" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Pastoral.jpg');"></div>
+                        <iframe data-src="https://ash-k.itch.io/pastoral/embed" class="game-iframe" title="Pastoral" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Pastoral</h3>
+                        <p class="game-description">A peaceful block-building farming simulator with cute voxel graphics.</p>
+                        <a href="https://ash-k.itch.io/pastoral" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/PolyTrack.jpg');"></div>
+                        <iframe data-src="https://kodub.itch.io/polytrack" class="game-iframe" title="PolyTrack" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">PolyTrack</h3>
+                        <p class="game-description">A low-poly racing game with loops, jumps and high speeds, inspired by TrackMania. Includes a level editor where you can create and share tracks.</p>
+                        <a href="https://kodub.itch.io/polytrack" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Zuis Witch Academy.jpg');"></div>
+                        <iframe data-src="https://lunziestella.itch.io/zuis-witch-academy" class="game-iframe" title="Zui's Witch Academy" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Zui's Witch Academy</h3>
+                        <p class="game-description">A cozy magical academy simulation with crafting and exploration elements.</p>
+                        <a href="https://lunziestella.itch.io/zuis-witch-academy" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/An Exact Map of the Empire.jpg');"></div>
+                        <iframe data-src="https://averyhiebert.itch.io/an-exact-map-of-the-empire" class="game-iframe" title="An Exact Map of the Empire" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">An Exact Map of the Empire</h3>
+                        <p class="game-description">An explorative voxel adventure with unique map-building mechanics.</p>
+                        <a href="https://averyhiebert.itch.io/an-exact-map-of-the-empire" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/The Void.jpg');"></div>
+                        <iframe data-src="https://digital-mosaic-games.itch.io/the-void" class="game-iframe" title="The Void" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">The Void</h3>
+                        <p class="game-description">A mysterious block-based exploration game set in an abstract void world.</p>
+                        <a href="https://digital-mosaic-games.itch.io/the-void" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Tidehold.png');"></div>
+                        <iframe data-src="https://outstar.itch.io/tidehold" class="game-iframe" title="Tidehold" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Tidehold</h3>
+                        <p class="game-description">A block-based strategy game where you build and defend against the rising tide.</p>
+                        <a href="https://outstar.itch.io/tidehold" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="minecraft-cover"></div>
+                        <iframe data-src="https://spelkollektivet.itch.io/not-us" class="game-iframe" title="Not Us" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Not Us</h3>
+                        <p class="game-description">A suspenseful multiplayer game with blocky graphics and social deduction mechanics.</p>
+                        <a href="https://spelkollektivet.itch.io/not-us" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Super Pyonpon.jpg');"></div>
+                        <iframe data-src="https://team-bugulon.itch.io/super-pyonpon" class="game-iframe" title="Super Pyonpon" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Super Pyonpon</h3>
+                        <p class="game-description">A colorful block-based puzzle platformer with charming voxel graphics.</p>
+                        <a href="https://team-bugulon.itch.io/super-pyonpon" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/pack.jpg');"></div>
+                        <iframe data-src="https://plasmastarfish.itch.io/pack" class="game-iframe" title="Pack" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Pack</h3>
+                        <p class="game-description">A minimalist voxel-based puzzle game about packing and organizing blocks.</p>
+                        <a href="https://plasmastarfish.itch.io/pack" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Crawlscape.jpg');"></div>
+                        <iframe data-src="https://schrolab.itch.io/crawlscape" class="game-iframe" title="Crawlscape" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Crawlscape</h3>
+                        <p class="game-description">A blocky dungeon crawler with mining and crafting mechanics.</p>
+                        <a href="https://schrolab.itch.io/crawlscape" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Last Fuse.jpg');"></div>
+                        <iframe data-src="https://yyz.itch.io/last-fuse" class="game-iframe" title="Last Fuse" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Last Fuse</h3>
+                        <p class="game-description">A voxel-based puzzle game with explosive mechanics and creative problem-solving.</p>
+                        <a href="https://yyz.itch.io/last-fuse" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Burrilka.jpg');"></div>
+                        <iframe data-src="https://echerryart.itch.io/burrilka" class="game-iframe" title="Burrilka" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Burrilka</h3>
+                        <p class="game-description">A charming block-style building game with unique architectural challenges.</p>
+                        <a href="https://echerryart.itch.io/burrilka" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Arclands Character Creator.jpg');"></div>
+                        <iframe data-src="https://jonkeller.itch.io/arclands-character-creator" class="game-iframe" title="Arclands Character Creator" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Arclands Character Creator</h3>
+                        <p class="game-description">A detailed voxel character creator with block-based customization options.</p>
+                        <a href="https://jonkeller.itch.io/arclands-character-creator" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Drill Off.jpg');"></div>
+                        <iframe data-src="https://anttihaavikko.itch.io/drill-off" class="game-iframe" title="Drill Off" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Drill Off</h3>
+                        <p class="game-description">A mining adventure game with block destruction and resource gathering mechanics.</p>
+                        <a href="https://anttihaavikko.itch.io/drill-off" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Cheese is the Reason.gif');"></div>
+                        <iframe data-src="https://studio-laaya.itch.io/cheese-is-the-reason" class="game-iframe" title="Cheese is the Reason" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Cheese is the Reason</h3>
+                        <p class="game-description">A whimsical block-style adventure game with cheese collecting mechanics.</p>
+                        <a href="https://studio-laaya.itch.io/cheese-is-the-reason" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Deep Fry.jpg');"></div>
+                        <iframe data-src="https://thiori.itch.io/deep-fry" class="game-iframe" title="Deep Fry" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Deep Fry</h3>
+                        <p class="game-description">A quirky cooking game with block-style visuals and food crafting mechanics.</p>
+                        <a href="https://thiori.itch.io/deep-fry" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Shleep.jpg');"></div>
+                        <iframe data-src="https://bippinbits.itch.io/shleep" class="game-iframe" title="Shleep" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Shleep</h3>
+                        <p class="game-description">A peaceful sheep-herding game with voxel graphics and relaxing gameplay.</p>
+                        <a href="https://bippinbits.itch.io/shleep" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Break the Tower.jpg');"></div>
+                        <iframe data-src="https://torcado.itch.io/break-the-tower" class="game-iframe" title="Break the Tower" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Break the Tower</h3>
+                        <p class="game-description">A block destruction game where you strategically demolish towering structures.</p>
+                        <a href="https://torcado.itch.io/break-the-tower" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Crimson Door Studio.jpg');"></div>
+                        <iframe data-src="https://crimson-door-studio.itch.io/" class="game-iframe" title="Crimson Door Studio Games" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Crimson Door Studio</h3>
+                        <p class="game-description">A collection of block-style games with creative building and adventure elements.</p>
+                        <a href="https://crimson-door-studio.itch.io/" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/What Lurks Below.jpg');"></div>
+                        <iframe data-src="https://jameskelly.itch.io/what-lurks-below" class="game-iframe" title="What Lurks Below" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">What Lurks Below</h3>
+                        <p class="game-description">A mysterious block-mining adventure that explores the depths of a mysterious world.</p>
+                        <a href="https://jameskelly.itch.io/what-lurks-below" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Well Gnome.png');"></div>
+                        <iframe data-src="https://delunado.itch.io/well-gnome" class="game-iframe" title="Well Gnome" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Well Gnome</h3>
+                        <p class="game-description">A charming garden management game with voxel graphics and resource gathering.</p>
+                        <a href="https://delunado.itch.io/well-gnome" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Hollowspire.jpg');"></div>
+                        <iframe data-src="https://simex.itch.io/hollowspire" class="game-iframe" title="Hollowspire" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Hollowspire</h3>
+                        <p class="game-description">A block-based tower exploration game with dungeon crawling elements.</p>
+                        <a href="https://simex.itch.io/hollowspire" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Hark.jpg');"></div>
+                        <iframe data-src="https://protzz.itch.io/hark" class="game-iframe" title="Hark" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Hark</h3>
+                        <p class="game-description">A minimalist block adventure with exploration and puzzle-solving mechanics.</p>
+                        <a href="https://protzz.itch.io/hark" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Icebreakers.jpg');"></div>
+                        <iframe data-src="https://moonlightjammers.itch.io/icebreakers" class="game-iframe" title="Icebreakers" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Icebreakers</h3>
+                        <p class="game-description">A cool ice-themed puzzle game with block-breaking and path-making mechanics.</p>
+                        <a href="https://moonlightjammers.itch.io/icebreakers" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Dorfs.jpg');"></div>
+                        <iframe data-src="https://profour.itch.io/dorfs" class="game-iframe" title="Dorfs" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Dorfs</h3>
+                        <p class="game-description">A dwarf settlement building game with mining, crafting, and resource management.</p>
+                        <a href="https://profour.itch.io/dorfs" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Sushi Unroll.jpg');"></div>
+                        <iframe data-src="https://unsame.itch.io/sushi-unroll" class="game-iframe" title="Sushi Unroll" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Sushi Unroll</h3>
+                        <p class="game-description">A delightful sushi-themed puzzle game with voxel graphics and creative challenges.</p>
+                        <a href="https://unsame.itch.io/sushi-unroll" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Descend with Caution.png');"></div>
+                        <iframe data-src="https://lightning8113.itch.io/descend-with-caution" class="game-iframe" title="Descend with Caution" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Descend with Caution</h3>
+                        <p class="game-description">A block-based mining adventure where you navigate dangerous caves and gather resources.</p>
+                        <a href="https://lightning8113.itch.io/descend-with-caution" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Debts in the Depths.png');"></div>
+                        <iframe data-src="https://reaktori.itch.io/debts-in-the-depths" class="game-iframe" title="Debts in the Depths" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Debts in the Depths</h3>
+                        <p class="game-description">An underground mining adventure with resource gathering and debt repayment mechanics.</p>
+                        <a href="https://reaktori.itch.io/debts-in-the-depths" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Podvodsk.jpg');"></div>
+                        <iframe data-src="https://fourquarters.itch.io/podvodsk" class="game-iframe" title="Podvodsk" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Podvodsk</h3>
+                        <p class="game-description">A voxel-style underwater city building and exploration game.</p>
+                        <a href="https://fourquarters.itch.io/podvodsk" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Breadskate Forever.png');"></div>
+                        <iframe data-src="https://sirmilkman.itch.io/breadskate-forever" class="game-iframe" title="Breadskate Forever" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Breadskate Forever</h3>
+                        <p class="game-description">A quirky bread-based skating game with blocky graphics and creative obstacles.</p>
+                        <a href="https://sirmilkman.itch.io/breadskate-forever" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Petrograd 1917.jpg');"></div>
+                        <iframe data-src="https://red-autumn.itch.io/petrograd-1917" class="game-iframe" title="Petrograd 1917" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Petrograd 1917</h3>
+                        <p class="game-description">A historical block-style adventure set in revolutionary Russia.</p>
+                        <a href="https://red-autumn.itch.io/petrograd-1917" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Portrait on Imagined Horizon.png');"></div>
+                        <iframe data-src="https://dominoclub.itch.io/portrait-on-imagined-horizon" class="game-iframe" title="Portrait on Imagined Horizon" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Portrait on Imagined Horizon</h3>
+                        <p class="game-description">An artistic voxel-based exploration game with contemplative gameplay.</p>
+                        <a href="https://dominoclub.itch.io/portrait-on-imagined-horizon" target="_blank" class="play-button">Play Full Screen</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-iframe-container">
+                        <div class="game-cover" style="background-image: url('images/Delivery for Mr. Lucy.jpg');"></div>
+                        <iframe data-src="https://turbolaser.itch.io/delivery-for-mr-lucy" class="game-iframe" title="Delivery for Mr. Lucy" allowfullscreen></iframe>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Delivery for Mr. Lucy</h3>
+                        <p class="game-description">A quirky delivery adventure with block-style graphics and challenging puzzles.</p>
+                        <a href="https://turbolaser.itch.io/delivery-for-mr-lucy" target="_blank" class="play-button">Play Full Screen</a>
                     </div>
                 </div>
             </div>
@@ -923,26 +1445,41 @@
             </div>
         </div>
     </footer>
-    
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent-banner" class="cookie-consent-banner">
+        <div class="cookie-consent-content">
+            <h3>Cookie Notice</h3>
+            <p>This website uses cookies to enhance your browsing experience. Some games may also use third-party cookies.</p>
+            <p>Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies, which may affect some game functionality.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="cookie-btn accept">Accept All Cookies</button>
+                <button id="reject-cookies" class="cookie-btn reject">Reject Non-Essential</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 添加处理封面点击的脚本
         document.addEventListener('DOMContentLoaded', function() {
-            const minecraftCover = document.querySelector('.minecraft-cover');
-            const minecraftIframe = document.querySelector('.game-iframe[title="Classic Minecraft"]');
+            // 处理所有封面点击
+            const allCovers = document.querySelectorAll('.minecraft-cover, .game-cover');
             
-            if (minecraftCover && minecraftIframe) {
-                minecraftCover.addEventListener('click', function() {
+            allCovers.forEach(cover => {
+                cover.addEventListener('click', function() {
+                    const iframe = this.nextElementSibling;
+                    
                     // 加载iframe
-                    if (minecraftIframe.dataset.src) {
-                        minecraftIframe.src = minecraftIframe.dataset.src;
-                        minecraftIframe.classList.add('loaded');
-                        minecraftIframe.removeAttribute('data-src');
+                    if (iframe && iframe.dataset.src) {
+                        iframe.src = iframe.dataset.src;
+                        iframe.classList.add('loaded');
+                        iframe.removeAttribute('data-src');
                     }
                     
                     // 隐藏封面
-                    minecraftCover.style.display = 'none';
+                    this.style.display = 'none';
                 });
-            }
+            });
             
             // 随机生成更多漂浮方块
             const sandboxElements = document.querySelector('.sandbox-elements');
@@ -1184,7 +1721,63 @@
     </script>
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="script.js"></script>
+    <!-- JavaScript with specific type -->
+    <script src="script.js" type="application/javascript"></script>
+    <!-- 备用脚本加载方案 -->
+    <script>
+        // 检查主脚本是否加载成功
+        window.addEventListener('DOMContentLoaded', function() {
+            // 等待一段时间，看是否有主要函数被定义
+            setTimeout(function() {
+                // 如果主要脚本功能不可用，尝试重新加载
+                if (typeof handleGameCoverClicks === 'undefined') {
+                    console.log('尝试使用内联方式加载JavaScript');
+                    var scriptElement = document.createElement('script');
+                    scriptElement.src = 'script.js?' + new Date().getTime(); // 添加时间戳避免缓存
+                    scriptElement.type = 'application/javascript';
+                    document.body.appendChild(scriptElement);
+                    
+                    // 如果仍然失败，提供基本功能
+                    scriptElement.onerror = function() {
+                        console.log('脚本加载失败，使用备用功能');
+                        provideBasicFunctionality();
+                    };
+                }
+            }, 1500);
+        });
+        
+        // 备用基本功能
+        function provideBasicFunctionality() {
+            // 处理游戏覆盖图点击
+            document.querySelectorAll('.minecraft-cover, .game-cover').forEach(function(cover) {
+                cover.addEventListener('click', function() {
+                    var container = this.closest('.game-iframe-container');
+                    var iframe = container.querySelector('iframe');
+                    
+                    if (iframe && iframe.dataset.src) {
+                        iframe.src = iframe.dataset.src;
+                        iframe.classList.add('loaded');
+                        iframe.removeAttribute('data-src');
+                    }
+                    
+                    this.style.display = 'none';
+                });
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 </html> 
