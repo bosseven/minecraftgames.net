@@ -1,0 +1,7 @@
+# 确保样式和脚本文件总是能被找到
+/styles.css   /styles.css   200
+/style.css    /style.css    200
+/script.js    /script.js    200
+
+# 避免404页面，将所有其他路径重定向到首页
+/*    /index.html   200 

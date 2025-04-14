@@ -1,0 +1,18 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Content-Security-Policy: default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self'
+  Referrer-Policy: no-referrer-when-downgrade
+
+/styles.css
+  Content-Type: text/css
+  Cache-Control: public, max-age=31536000
+
+/style.css
+  Content-Type: text/css
+  Cache-Control: public, max-age=31536000
+
+/script.js
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=31536000 
